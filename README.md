@@ -1,125 +1,73 @@
-# Proyecto-Integrador-
+# DeducIA Edge Pro 🚀
 
-
----
-
-## 1. Parte Inicial del Proyecto
-
-* **Nombre del Proyecto:** DeducIA Edge *(Nombre provisional)*
-* **Tipo de Producto:** Progressive Web App (PWA) con IA embebida en el cliente (Edge AI).
-* **Propuesta de Valor:** Auditoría y validación instantánea de deducibilidad fiscal en el dispositivo móvil sin envío de datos a servidores externos (Arquitectura *Zero-Data Leak*).
+**DeducIA Edge Pro** es una Progressive Web App (PWA) de auditoría y validación instantánea de deducibilidad fiscal bajo la normativa del SAT (México). Mediante una arquitectura **Edge AI (Zero-Data Leak)**, el sistema extrae datos de tickets y procesa reglas fiscales complejas directamente en el dispositivo del usuario, garantizando privacidad absoluta, funcionamiento 100% offline y costos de infraestructura de servidor cercanos a cero.
 
 ---
 
-## 2. Alcance del Proyecto
+## 📌 1. La Problemática
 
-### Dentro del Alcance (In Scope)
+El entorno fiscal en México para los contribuyentes físicos (RESICO, Actividad Empresarial) y los despachos contables presenta tres ineficiencias críticas:
 
-* **Captura y OCR Local:** Procesamiento de imágenes (tickets y facturas PDF/XML/impresos) mediante modelos ligeros de visión computacional optimizados para WebAssembly / WebGPU directamente en el navegador.
-* **Motor de Reglas Fiscales:** Evaluación de requisitos de deducibilidad conforme a la Ley del Impuesto sobre la Renta (LISR) y Ley del Impuesto al Valor Agregado (LIVA) vigentes en México.
-* **Semáforo de Deducibilidad:** Clasificación visual inmediata (Verde = Deducible, Amarillo = Requiere revisión/Forma de pago, Rojo = No deducible).
-* **Almacenamiento Local Seguro:** Guardado de comprobantes y metadatos localmente mediante IndexedDB / OPFS.
-* **Soporte Offline (PWA):** Instalación desde el navegador y funcionamiento 100% sin conexión a internet.
-* **Exportación de Reportes:** Generación de resúmenes precalculados en PDF/CSV para envío directo a despachos contables.
-
-### Fuera del Alcance (Out of Scope)
-
-* Timbrado o emisión de Comprobantes Fiscales Digitales por Internet (CFDI).
-* Conexión directa mediante WS/API del SAT para descarga masiva en la versión inicial.
-* Sincronización en la nube o almacenamiento centralizado de datos de facturación.
+1. **Falta de Validación en el Punto de Venta:** Los contribuyentes realizan gastos comerciales cotidianos (combustibles, viáticos, insumos) sin saber si cumplen los requisitos del SAT en el momento de la compra. Errores comunes (como pagar gasolina en efectivo o facturar con un Uso de CFDI incorrecto) provocan la pérdida del derecho a deducir el ISR y acreditar el IVA.
+2. **Desconfianza y Riesgos de Privacidad (Data Leak):** Las soluciones contables tradicionales en la nube exigen que el usuario suba información financiera altamente sensible (RFCs, montos, conceptos de compra) a servidores de terceros, abriendo vectores de ataque y fugas de datos.
+3. **Saturación Operativa en los Despachos:** Los contadores pierden hasta el 40% de su tiempo mensual revisando, clasificando y corrigiendo facturas mal emitidas o rechazadas que sus clientes les envían al cierre de mes, limitando la escalabilidad del despacho.
 
 ---
 
-## 3. Muestra o Sustento (Fundamento Normativo y Tecnológico)
+## 🎯 2. Impacto Comercial y Operativo
 
-### Sustento Normativo (SAT México)
+El proyecto adopta un modelo **B2B2C** diseñado para mitigar las problemáticas anteriores de forma escalable:
 
-* **LISR Art. 27:** Requisitos de las deducciones autorizadas (pagos mayores a $2,000 MXN mediante medios electrónicos, relación estricta con la actividad, datos del emisor/receptor).
-* **LISR Art. 113-E a 113-J (RESICO):** Reglas específicas de deducciones para el Régimen Simplificado de Confianza y cálculo de IVA acreditable.
-* **LIVA Art. 5:** Requisitos para el acreditamiento del IVA en comprobantes fiscales.
-
-### Sustento Tecnológico
-
-* **WebAssembly (Wasm) + WebGPU:** Ejecución de modelos de visión e inferencia a nivel de cliente para lograr respuestas en milisegundos sin latencia de red.
-* **Edge AI / Small Language Models (SLMs):** Cuantización de modelos para procesamiento eficiente en memoria RAM de dispositivos móviles gama media/alta.
+* **Para el Despacho Contable (Cliente B2B):** Funciona como un canal de distribución y control de higiene fiscal. El despacho adquiere el software y proporciona acceso a sus clientes. Al automatizar la validación en origen, el contador elimina el trabajo manual de corrección y puede absorber el doble de clientes sin aumentar su personal auxiliar.
+* **Para el Contribuyente Final (Usuario C):** Recibe una aplicación gratuita (patrocinada por su contador) que actúa como un asistente en su bolsillo. El "Semáforo Fiscal" le advierte en milisegundos si un gasto es válido o cómo corregirlo antes de abandonar el establecimiento.
+* **Para el Negocio/Desarrollador:** Al delegar el 100% del procesamiento (OCR y reglas) al hardware del cliente, los costos operativos de cómputo en la nube se reducen a **\$0.00 pesos**. Esto permite ofrecer tarifas fijas altamente competitivas y retener un margen de ganancia neto cercano al 95%.
 
 ---
 
-## 4. Objetivos
+## 💡 3. Innovación Tecnológica
 
-### Objetivo General
+La ventaja competitiva de **DeducIA Edge Pro** radica en su diseño técnico:
 
-Desarrollar e implementar una PWA con IA embebida en el cliente para validar de forma offline, inmediata (en milisegundos) y privada la deducibilidad fiscal de facturas y tickets bajo la normativa vigente del SAT en México.
-
-### Objetivos Específicos
-
-1. **Desarrollar el motor OCR e inferencia local:** Lograr la extracción de datos clave (RFC, fecha, monto, IVA, método de pago, concepto) con un tiempo de procesamiento inferior a 1,500 ms por ticket/factura.
-2. **Implementar el motor de reglas fiscales:** Parametrizar las reglas de LISR/LIVA para clasificar correctamente el nivel de deducibilidad en los regímenes de RESICO y Persona Física con Actividad Empresarial/Profesional.
-3. **Garantizar la privacidad *Zero-Data Leak*:** Asegurar que el 100% del procesamiento y almacenamiento de datos sensibles (RFCs, montos, conceptos) permanezca exclusivamente en el almacenamiento local del navegador del usuario.
-4. **Construir la experiencia PWA offline:** Habilitar capacidades de Service Workers y caching para garantizar la usabilidad completa de la aplicación sin conectividad a internet.
+* **Arquitectura Zero-Data Leak:** Ninguna factura, imagen, RFC o metadato financiero sale del teléfono del usuario hacia servidores externos. El procesamiento es estrictamente local.
+* **Pipeline Híbrido de Inferencia:** 
+  * *Para imágenes:* Ejecuta modelos de visión computacional y OCR ultraligeros en el cliente mediante WebAssembly (Wasm).
+  * *Para archivos XML:* Realiza un parseo sintáctico inmediato de texto plano en JavaScript nativo (0 ms de latencia).
+* **Desacoplamiento de Lógica Fiscal:** El motor de Inteligencia Artificial solo se encarga de la extracción de texto. Las leyes fiscales se evalúan mediante un árbol de decisiones estructurado en un JSON modular. Esto permite actualizar la aplicación ante reformas del SAT en minutos, sin necesidad de reentrenar o modificar los modelos de IA.
 
 ---
 
-## 5. Justificación
+## 🛠️ 4. Stack Tecnológico Recomendado y Justificación
 
-* **Privacidad y Seguridad (Zero-Data Leak):** Los contribuyentes y despachos enfrentan desconfianza al subir información financiera y RFCs a servidores de terceros. Procesar todo en el cliente elimina vectores de ataque en la nube y riesgos de filtración.
-* **Reducción de Costos Operativos:** Al descentralizar el cómputo al dispositivo del usuario (Edge AI), el costo de infraestructura backend se reduce prácticamente a cero, permitiendo escalabilidad masiva sin gastos crecientes de servidor.
-* **Prevención de Pérdida Monetaria:** Muchos contribuyentes pierden saldo a favor o IVA acreditable por no identificar a tiempo errores comunes (ej. pagar más de $2,000 en efectivo o erogaciones no deducibles para su régimen). El semáforo visual resuelve esto al momento de la compra.
-* **Fricción Cero de Adopción:** La arquitectura PWA evita las comisiones, restricciones y tiempos de espera de aprobación de App Store y Google Play Store, facilitando acceso instantáneo desde una URL.
+Para garantizar la estabilidad en producción y cumplir la promesa de "fricción cero", se recomienda el siguiente stack:
 
----
-
-## 6. Partes Interesadas (Stakeholders)
-
-| Parte Interesada | Rol / Interés | Expectativa Principal |
-| --- | --- | --- |
-| **Freelancers y Contribuyentes PFF** | Usuarios Finales (RESICO / Sueldos / Serv. Profesionales) | Detección rápida de deducciones, usabilidad sencilla e higiene fiscal. |
-| **Despachos y Contadores** | Usuarios Aliados / Canal de Distribución | Recepción de comprobantes precalculados, organizados y sin errores de origen. |
-| **Equipo de Desarrollo (FrontEnd & AI)** | Ejecutores Técnicos | Optimización de modelos Wasm, experiencia de usuario fluida y rendimiento de PWA. |
-| **SAT (Entidad Reguladora)** | Marco de Referencia Externo | Cumplimiento estricto de la normativa fiscal (LISR/LIVA). |
+| Componente | Tecnología | Justificación |
+| :--- | :--- | :--- |
+| **Frontend Framework** | **Next.js (App Router) / React** o **Vite + React** | Permite construir una interfaz SPA (Single Page Application) altamente reactiva, idónea para compilar estructuras PWA y gestionar ciclos de vida optimizados. |
+| **PWA & Offline** | **Workbox (Service Workers)** | Proporciona control total sobre las estrategias de almacenamiento en caché de los activos y scripts de IA, garantizando un funcionamiento 100% independiente de internet. |
+| **Motor OCR Local** | **PaddleOCR (v4 Slim) Wasm** o **ONNX Runtime Web** | Modelos cuantizados a 4-bits que ocupan entre 15MB y 20MB de almacenamiento. Ideales para descargarse una sola vez en la PWA y procesar imágenes localmente sin consumir memoria excesiva. |
+| **Persistencia Local** | **IndexedDB (vía Dexie.js) + OPFS** | Sistema de base de datos relacional nativo del navegador. Al usar `navigator.storage.persist()`, se previene que el sistema operativo móvil borre los comprobantes por falta de espacio. |
+| **Seguridad de Datos** | **Web Crypto API** | Cifrado asimétrico nativo del navegador. Se utiliza para compilar y empaquetar los respaldos locales (`.deducia`) con una contraseña del usuario, protegiendo los datos exportados a la nube personal. |
+| **Hosting e Infraestructura** | **Vercel / Netlify / AWS S3** | Al ser una aplicación estática basada en computación del lado del cliente, el hosting es sumamente económico y tiene soporte nativo para redes de distribución de contenido (CDN). |
 
 ---
 
-## 7. Matriz de Riesgos
+## 🗂️ 5. Estructura de Módulos y Submódulos (Fase MVP)
 
-| Riesgo | Impacto | Probabilidad | Estrategia de Mitigación |
-| --- | --- | --- | --- |
-| **R1. Alto consumo de recursos en móviles de gama baja** | Alto | Media | Aplicar cuantización agresiva a los modelos de visión/OCR y establecer *fallbacks* a motores OCR livianos basados en Wasm. |
-| **R2. Cambios en la legislación fiscal del SAT** | Alto | Media | Diseñar el motor de reglas de forma modular (JSON de políticas) para actualizar las reglas sin reescribir la arquitectura de IA. |
-| **R3. Errores de lectura en comprobantes dañados o borrosos** | Medio | Alta | Implementar validaciones cruzadas (comprobar subtotal + IVA = total) y permitir edición manual rápida en el semáforo visual. |
-| **R4. Borrado accidental de datos por limpieza del navegador** | Alto | Baja | Implementar solicitud de almacenamiento persistente (`navigator.storage.persist()`) y alertas de respaldo/exportación local. |
+Para iniciar el desarrollo ordenado del Producto Mínimo Viable (MVP), se plantea la siguiente arquitectura modular:
 
----
+### Modulo 1: Core de Captura e Inferencia Local (AI Pipeline)
+* **Submódulo 1.1: Captura y Preprocesamiento de Imagen:** Control de cámara nativa mediante HTML5, escalado, conversión a escala de grises y ajuste de contraste local en Canvas para mejorar la legibilidad del ticket físico.
+* **Submódulo 1.2: Motor OCR (Wasm Worker):** Inicialización del modelo cuantizado dentro de un *Web Worker* independiente para no congelar la interfaz de usuario durante la extracción del texto (RFC, montos, conceptos).
+* **Submódulo 1.3: Parser Nativo XML/PDF:** Lector estructurado de archivos digitales `.xml` para extraer etiquetas clave del estándar CFDI (`FormaPago`, `RegimenFiscalReceptor`, etc.) de forma instantánea.
 
-## 8. Cronograma / Desglose de Trabajo (WBS)
+### Módulo 2: Motor Normativo y Árbol de Reglas (Fiscal Engine)
+* **Submódulo 2.1: Intérprete JSON de Reglas:** Lógica en TypeScript que recibe las variables extraídas del Módulo 1 y las evalúa contra el esquema de políticas fiscales vigentes.
+* **Submódulo 2.2: Clasificador de Regímenes:** Filtro condicional que parametriza las diferencias de acreditación entre RESICO y Actividad Empresarial (ej. manejo de deducciones personales).
 
-```
-DeducIA Edge
-├── 1. Investigación y Arquitectura
-│   ├── 1.1 Definición del esquema JSON de reglas LISR/LIVA
-│   └── 1.2 Selección y pruebas del modelo OCR/Inferencia embebido (Wasm/WebGPU)
-├── 2. Desarrollo del Core FrontEnd & AI Local
-│   ├── 2.1 Implementación del Pipeline de captura y preprocesamiento de imagen
-│   ├── 2.2 Integración del motor de inferencia en el navegador
-│   └── 2.3 Desarrollo del motor de validación de reglas de deducibilidad
-├── 3. Capa de Datos y PWA
-│   ├── 3.1 Configuración de IndexedDB / OPFS para guardado local
-│   └── 3.2 Service Workers, Manifest y soporte offline completo
-├── 4. Interfaz de Usuario (UI/UX)
-│   ├── 4.1 Pantalla de escaneo y semáforo visual de resultados
-│   └── 4.2 Módulo de exportación de reportes (PDF/CSV)
-└── 5. Pruebas y Optimización
-    ├── 5.1 Pruebas de velocidad de inferencia (< 1,500 ms) en diversos dispositivos
-    └── 5.2 Validaciones de casos borde de normativa SAT
+### Módulo 3: Interfaz de Usuario y Experiencia del Semáforo (UI/UX)
+* **Submódulo 3.1: Dashboard de Perfil Fiscal:** Configuración inicial del usuario (RFC, Régimen Fiscal, Actividad Económica predominante).
+* **Submódulo 3.2: Vista del Semáforo Dinámico:** Pantalla de resultados de escaneo con colores reactivos (Verde / Amarillo / Rojo) acompañados de descripciones claras en lenguaje ciudadano y acciones de corrección sugeridas.
 
-```
-
-### Fases del Cronograma (Estimación general)
-
-```
-[Semana 1 - 2]  Fase 1: Arquitectura y pruebas del motor AI embebido
-[Semana 3 - 5]  Fase 2: Desarrollo Core (OCR local + Motor de reglas SAT)
-[Semana 6 - 7]  Fase 3: Implementación PWA, IndexedDB y UI/UX
-[Semana 8]      Fase 4: Pruebas de rendimiento, optimización y entrega
-
-```
+### Módulo 4: Capa de Datos, Persistencia y Resiliencia (Storage & Security)
+* **Submódulo 4.1: Gestor IndexedDB:** Repositorio local de comprobantes escaneados, metadatos y estados de deducibilidad.
+* **Submódulo 4.2: Exportador de Backups Cifrados:** Utilidad para empaquetar la base de datos local en un archivo legible cifrado (`.deducia`) y módulo generador de reportes mensuales en formatos CSV y PDF limpios para el contador.
